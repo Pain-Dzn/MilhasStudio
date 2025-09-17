@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Ver Mais - Fotos por Categoria</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f7f7f7; }
+        .container { max-width: 1000px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 8px; }
+        h1 { text-align: center; margin-bottom: 30px; }
+        .gallery { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+        .gallery img { width: 220px; height: 160px; object-fit: cover; border-radius: 6px; box-shadow: 0 2px 8px #0001; }
+        .back { display: block; margin-bottom: 20px; color: #0077cc; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back">&larr; Voltar</a>
+        <h1 id="titulo-categoria">Fotos</h1>
+        <div class="gallery" id="galeria-fotos"></div>
+    </div>
+    <script>
+         const categorias = {
+            'Estudio': 'assets/images',
+            'Eventos': 'assets/images',
+            'Outdoor': 'assets/images'
+        };
+
+        // Função para obter o parâmetro da categoria da URL
+        function getCategoriaFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('categoria');
+        }
+
+        // Função para carregar as fotos da categoria
+        function carregarFotos(categoria) {
+            const pasta = categorias[categoria];
+            if (!pasta) {
+                document.getElementById('titulo-categoria').textContent = 'Categoria não encontrada';
+                return;
+            }
+            document.getElementById('titulo-categoria').textContent = `Fotos de ${categoria}`;
+
+             // Ajuste o número máximo conforme necessário
+            const maxFotos = 20;
+            const galeria = document.getElementById('galeria-fotos');
+            galeria.innerHTML = '';
+
+            for (let i = 1; i <= maxFotos; i++) {
+                const img = document.createElement('img');
+                img.src = `${pasta}/${i}.jpg`;
+                img.alt = `${categoria} ${i}`;
+                img.onerror = function() { this.style.display = 'none'; };
+                galeria.appendChild(img);
+            }
+        }
+
+        // Executa ao carregar a página
+        const categoria = getCategoriaFromURL();
+        carregarFotos(categoria);
+    </script>
+</body>
+</html>
